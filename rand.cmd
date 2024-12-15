@@ -1,11 +1,11 @@
 @echo off
 
-:: Define the file path
+:: Define the path to the file
 set "filePath=C:\Users\user\OneDrive - Ulster University\Documents\powerShellRand\documentname.txt"
 
-:: Change to the Git repository directory
-cd "C:\Users\user\OneDrive - Ulster University\Documents\powerShellRand" || (
-    echo Failed to change directory. Ensure the path is correct.
+:: Debug file path
+if not exist "%filePath%" (
+    echo ERROR: The file "%filePath%" does not exist!
     pause
     exit /b 1
 )
@@ -16,11 +16,23 @@ echo Generated timestamp: %timestamp%
 
 :: Append timestamp to the document
 echo Appending: Update at %timestamp%
-echo Update at %timestamp% >> %filePath%
+>> "%filePath%" echo Update at %timestamp%
+if errorlevel 1 (
+    echo ERROR: Unable to write to "%filePath%". Check permissions or file lock status.
+    pause
+    exit /b 1
+)
 
-:: Display the file's contents for debugging
+:: Display current file contents
 echo Current file contents:
-type %filePath%
+type "%filePath%"
+if errorlevel 1 (
+    echo ERROR: Unable to read "%filePath%". Check permissions or file lock status.
+    pause
+    exit /b 1
+)
+
+:: Proceed with Git operations...
 
 :: Debug Git staging
 echo Staging changes...
