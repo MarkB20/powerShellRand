@@ -1,10 +1,7 @@
 @echo off
 
 :: Define the path to the file to update
-set "filePath=C:\Users\user\OneDrive - Ulster University\Documents\powerShellRand\documentname.txt"
-
-:: Change to the Git repository directory
-cd "C:\Users\user\OneDrive - Ulster University\Documents\powerShellRand"
+set "filePath=C:\ProgramData\Microsoft\Windows\Start Menu\Programs\powerShellRand\documentname.txt"
 
 :: Define random commit messages
 set commitMessages[0]=Commit
@@ -29,7 +26,7 @@ for /f "tokens=*" %%A in ('powershell -NoProfile -Command "Get-Date -Format \"yy
 echo Update at %timestamp% >> %filePath%
 
 :: Stage the changes using Git
-git add -A
+git add %filePath%
 
 :: Commit the changes with the random message
 git commit -m "%randomMessage%"
@@ -39,4 +36,3 @@ git push origin main 2>nul
 
 :: Inform the user the script ran successfully
 echo Updated %filePath% and pushed changes with commit message: '%randomMessage%'
-
